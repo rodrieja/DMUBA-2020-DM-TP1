@@ -6,6 +6,7 @@ library(mongolite)
 
 # Importo las funciones auxiliares
 source("helpers/getNAPercentage.R")
+source("helpers/subsetDataFrameByColumns.R")
 
 
 
@@ -25,13 +26,27 @@ names(tweets)
 str(tweets)
 
 # Resumen del DF
-summary(tweets)
+summary(tweets[71:88])
 
 # Analizo la variabilidad de casos NA
-nas = getNAPercentage(tweets)
-hist(nas$percentage)
+nasTweets = getNAPercentage(tweets)
+hist(nasTweets$percentage)
+
+# c("created_at",  "favorite_count",  "retweet_count",  "followers_count",  "friends_count",  "listed_count",  "statuses_count",
+#   "favourites_count",  "account_created_at",  "quote_count",  "reply_count",  "retweet_favorite_count",  "retweet_retweet_count",
+#   "retweet_followers_count",  "retweet_friends_count",  "retweet_statuses_count",  "quoted_favorite_count",  "quoted_retweet_count",
+#   "quoted_followers_count",  "quoted_friends_count",  "quoted_statuses_count")
+
+# subsetDataFrameByColumns(tweets, numericAttributes)
 
 
+scale(tweets$favourites_count)
+
+boxplot(scale(tweets$favourites_count))
+
+boxplot(tweets$created_at)
+
+hist(tweets$favourites_count)
 
 
 # users
@@ -52,8 +67,5 @@ str(users)
 summary(users)
 
 # Analizo la variabilidad de casos NA
-nas = getNAPercentage(users)
-hist(nas$percentage)
-
-
-
+nasUsers = getNAPercentage(users)
+hist(nasUsers$percentage)
