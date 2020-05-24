@@ -1,8 +1,11 @@
 # Verifico que existan los package requeridos
 if (!require(mongolite))
   install.packages("mongolite")
+if (!require(tm))
+  install.packages("tm")
 
 library(mongolite)
+library(tm)
 
 # Importo las funciones auxiliares
 source("helpers/getNAPercentage.R")
@@ -26,11 +29,17 @@ names(tweets)
 str(tweets)
 
 # Resumen del DF
-summary(tweets[71:88])
+summary(tweets)
+tweets$location
 
 # Analizo la variabilidad de casos NA
 nasTweets = getNAPercentage(tweets)
-hist(nasTweets$percentage)
+
+missingData = nasTweets[nasTweets$percentage > 0,]
+orderedByPercentage = order(missingData$percentage, decreasing = TRUE)
+missingData[orderedByPercentage,]
+
+# hist(nasTweets$percentage)
 
 # c("created_at",  "favorite_count",  "retweet_count",  "followers_count",  "friends_count",  "listed_count",  "statuses_count",
 #   "favourites_count",  "account_created_at",  "quote_count",  "reply_count",  "retweet_favorite_count",  "retweet_retweet_count",
@@ -43,11 +52,11 @@ hist(nasTweets$percentage)
 scale(tweets$favourites_count)
 
 boxplot(scale(tweets$favourites_count))
-
 boxplot(tweets$created_at)
 
 hist(tweets$favourites_count)
 
+dfCorpus = Corpus(VectorSource(enc2utf8(tweets)))
 
 # users
 # Cargo las collections de MongoDB y las instancias
@@ -64,8 +73,13 @@ names(users)
 str(users)
 
 # Resumen del DF
-summary(users)
+summary(users$listed_count)
 
 # Analizo la variabilidad de casos NA
 nasUsers = getNAPercentage(users)
 hist(nasUsers$percentage)
+
+
+hist(table(users$listed_count))
+
+boxplot(scale(users$listed_count))

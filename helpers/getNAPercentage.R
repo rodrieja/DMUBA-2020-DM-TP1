@@ -4,13 +4,13 @@ getNAPercentage <- function(dataFrame) {
   
   for (colName in names(dataFrame)) {
     percentage = 0
-    nas = table(is.na(dataFrame[colName]))
+    nas = sum(is.na(dataFrame[colName]))
     
-    if (isTRUE(nas["TRUE"] > 0)) {
-      percentage = nas["TRUE"] / nRow * 100
+    if (nas > 0) {
+      percentage = nas / nRow * 100
     }
     
-    auxDF = data.frame(attribute=colName, percentage=percentage)
+    auxDF = data.frame(attribute = colName, percentage = percentage)
     
     finalDF = rbind(finalDF, auxDF)
   }
