@@ -3,9 +3,14 @@ if (!require(mongolite))
   install.packages("mongolite")
 if (!require(tm))
   install.packages("tm")
+if (!require(mice))
+  install.packages("mice")
+
 
 library(mongolite)
 library(tm)
+library(mice)
+
 
 # Importo las funciones auxiliares
 source("helpers/getNAPercentage.R")
@@ -32,12 +37,34 @@ str(tweets)
 summary(tweets)
 tweets$location
 
-# Analizo la variabilidad de casos NA
+# Analizo la variabilidad de casos faltantes
 nasTweets = getNAPercentage(tweets)
 
 missingData = nasTweets[nasTweets$percentage > 0,]
 orderedByPercentage = order(missingData$percentage, decreasing = TRUE)
 missingData[orderedByPercentage,]
+
+
+tweetsWithmissingData = subsetDataFrameByColumns(tweets, missingData$attribute)
+names(tweetsWithmissingData)[order(names(tweetsWithmissingData))]
+
+subset = c("country", "description", "hashtags", "urls_url", "media_url", "mentions_user_id", "quote_count",
+           "reply_count", "retweet_user_id", "place_name", "reply_to_user_id", "url")
+
+subset = c("country", "description", "hashtags", "place_name")
+
+missingSubSet = subsetDataFrameByColumns(tweets, subset)
+
+md.pattern(missingSubSet, rotate.names = TRUE)
+
+
+subset = c("place_url", "place_name", "lat", "lng")
+
+missingSubSet = subsetDataFrameByColumns(tweets, subset)
+
+md.pattern(missingSubSet, rotate.names = TRUE)
+
+
 
 # hist(nasTweets$percentage)
 
@@ -78,6 +105,12 @@ summary(users$listed_count)
 # Analizo la variabilidad de casos NA
 nasUsers = getNAPercentage(users)
 hist(nasUsers$percentage)
+
+
+
+md.pattern(users, rotate.names = TRUE)
+
+
 
 
 hist(table(users$listed_count))
