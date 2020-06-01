@@ -37,6 +37,10 @@ str(tweets)
 summary(tweets)
 tweets$location
 
+tweets$hashtags[!is.na(tweets$hashtags)][715]
+
+tweets$ha
+
 # Analizo la variabilidad de casos faltantes
 nasTweets = getNAPercentage(tweets)
 

@@ -15,8 +15,22 @@ db.tweets_mongo_covid19.aggregate(
       {
          "$project":{
             "created_at":1,
-            "retweet_created_at":1,
-            "retweet_count":1,
+            "is_retweet":1,
+            "is_quote":1,
+            "retweet_created_at":{
+               "$cond":{
+                  "if":{
+                     "$eq":[
+                        "$retweet_created_at",
+                        {
+
+                        }
+                     ]
+                  },
+                  "then":"NA",
+                  "else":"$retweet_created_at"
+               }
+            },
             "retweet_followers_count":1,
             "retweet_friends_count":1,
             "verified":1,
@@ -32,7 +46,7 @@ db.tweets_mongo_covid19.aggregate(
                         }
                      ]
                   },
-                  "then":null,
+                  "then":"NA",
                   "else":{
                      "$divide":[
                         {
@@ -46,8 +60,22 @@ db.tweets_mongo_covid19.aggregate(
                   }
                }
             },
-            "quoted_created_at":1,
-            "quote_count":1,
+            "quoted_followers_count":1,
+            "quoted_friends_count":1,
+            "quoted_created_at":{
+               "$cond":{
+                  "if":{
+                     "$eq":[
+                        "$quoted_created_at",
+                        {
+
+                        }
+                     ]
+                  },
+                  "then":"NA",
+                  "else":"$quoted_created_at"
+               }
+            },
             "hoursUntilQuoted":{
                "$cond":{
                   "if":{
@@ -58,7 +86,7 @@ db.tweets_mongo_covid19.aggregate(
                         }
                      ]
                   },
-                  "then":null,
+                  "then":"NA",
                   "else":{
                      "$divide":[
                         {
@@ -73,6 +101,9 @@ db.tweets_mongo_covid19.aggregate(
                }
             }
          }
+      },
+      {
+         "$out":"retweet_quoted_spawn_time"
       }
    ]
 )
