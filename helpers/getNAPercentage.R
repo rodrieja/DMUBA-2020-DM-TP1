@@ -1,3 +1,5 @@
+# Devuelve % de NA por columnas de un dataFrame
+
 getNAPercentage <- function(dataFrame) {
   nRow = nrow(dataFrame)
   finalDF = data.frame()
