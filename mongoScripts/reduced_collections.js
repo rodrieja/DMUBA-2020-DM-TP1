@@ -32,15 +32,14 @@ db.getCollection('tweets_mongo_covid19').aggregate([
                 'created_at':1,
                 'favorite_count':1,
                 'retweet_count':1,
-                'is_retweet':1,
-                'is_quote':1,
+                'is_retweet':1,
+                'retweet_status_id':1,
+                'is_quote':1,
+                'quoted_status_id':1,
                 'reply_to_user_id':1,
                 'reply_to_status_id':1,
-                'status_url':1,
                 'quote_count':1,
-                'reply_count':1,
-                'place_name':1,
-                'country':1,
+                'reply_count':1
                 }},
 
     {$out: 'tweets_mongo_covid19_reducido'}])
