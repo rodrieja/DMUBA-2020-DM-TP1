@@ -31,10 +31,10 @@ tweets = tweetsCollection$find('{}')
 summary(tweets)
 
 # Distribución de frecuencia entre followers y friends
-hist(log10(tweets$quoted_followers_count), breaks = 30)
-hist(log10(tweets$quoted_friends_count), breaks = 30)
-hist(log10(tweets$retweet_followers_count), breaks = 30)
-hist(log10(tweets$retweet_friends_count), breaks = 30)
+hist(log10(tweets$quoted_followers_count), breaks = 20, main="Followers de Quotes", ylab="Frecuencia", xlab = "Followers log10")
+hist(log10(tweets$quoted_friends_count), breaks = 20, main="Friends de Quotes", ylab="Frecuencia", xlab = "Friends log10")
+hist(log10(tweets$retweet_followers_count), breaks = 20, main="Followers de Retweets", ylab="Frecuencia", xlab = "Followers log10")
+hist(log10(tweets$retweet_friends_count), breaks = 20, main="Friends de Retweets", ylab="Frecuencia", xlab = "Friends log10")
 
 # Distribución temporal de los Retweets y Quotes
 # Histograma de los tweets
@@ -61,13 +61,19 @@ summary(horasDiscretizadas)
 df = data.frame(quoted = horasDiscretizadas)
 p <- ggplot(df, aes(quoted))
 p <- p + geom_histogram(bins = 11, stat="count", colour="white")
+p = p + labs(
+  x = "",
+  y = "Tweets",
+  title = "Generación de quotes",
+  caption = "(collection retweet_quoted_spawn_time)"
+)
 p
 
 hoursUntilRetweetNotNA = tweets$hoursUntilRetweet[!is.na(tweets$hoursUntilRetweet)]
 summary(hoursUntilRetweetNotNA)
 
 horasDiscretizadas = arules::discretize(hoursUntilRetweetNotNA,
-                                        method = "fixed",q
+                                        method = "fixed",
                                         breaks = c(0, 1, 2, 8, 21, 55, 120, 233, 610, 2584, 121393),
                                         labels = c("hora", "2hs", "8hs", "dia", "2dias", "semana", "2semanas", "mes", "trimeste", "+3meses")
 )
@@ -77,6 +83,12 @@ summary(horasDiscretizadas)
 
 p <- ggplot(df, aes(retweet))
 p <- p + geom_histogram(bins = 11, stat="count", colour="white")
+p = p + labs(
+  x = "",
+  y = "Tweets",
+  title = "Generación de retweets",
+  caption = "(collection retweet_quoted_spawn_time)"
+)
 p
 
 # Probamos agrupando los tweets del día, para observar la gran diferencia que existe
