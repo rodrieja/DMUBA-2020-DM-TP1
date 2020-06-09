@@ -10,7 +10,8 @@ if (!require(mice))
 library(mongolite)
 library(tm)
 library(mice)
-
+library(arules)
+library(ggplot2)
 
 # Importo las funciones auxiliares
 source("helpers/getNAPercentage.R")
@@ -61,12 +62,37 @@ missingSubSet = subsetDataFrameByColumns(tweets, subset)
 
 md.pattern(missingSubSet, rotate.names = TRUE)
 
-
 subset = c("place_url", "place_name", "lat", "lng")
 
 missingSubSet = subsetDataFrameByColumns(tweets, subset)
 
 md.pattern(missingSubSet, rotate.names = TRUE)
+
+
+
+
+# Probamos con una distribución siguiendo una secuenco Fibonacci 
+missingPercentageFixed = arules::discretize(nasTweets$percentage,
+                                        method = "fixed",
+                                        breaks = c(0, 0.1, 10, 20, 30, 40,50, 60, 70, 80, 90, 100),
+                                        labels = c("0%", "0%-10%", "10%-20%", "20%-30%", "30%-40%", "40%-50%", "50%-60%", "60%-70%", "70%-80%", "80%-90%", "90%-100%")
+)
+
+missingPercentageFixed
+
+df = data.frame(missings = missingPercentageFixed)
+summary(missingPercentageFixed)
+
+
+p = ggplot(df, aes(missings))
+p = p + geom_histogram(bins = 10,
+                       stat = "count",
+                       colour = "black")
+p = p + labs(x = "Datos faltantes", 
+             y = "Cantidad de columnas", 
+             title = "Porcentaje de datos faltantes por columna",
+             caption = "(collection tweets_mongo_covid19)")
+p
 
 
 
@@ -111,9 +137,7 @@ nasUsers = getNAPercentage(users)
 hist(nasUsers$percentage)
 
 
-
 md.pattern(users, rotate.names = TRUE)
-
 
 
 
