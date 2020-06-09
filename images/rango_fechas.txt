@@ -1,0 +1,21 @@
+> summary(tweets$created_at)
+                 Min.               1st Qu.                Median                  Mean               3rd Qu.                  Max. 
+"2020-05-02 01:39:37" "2020-05-02 01:46:44" "2020-05-05 00:27:56" "2020-05-06 13:13:55" "2020-05-10 12:02:54" "2020-05-15 18:24:13" 
+> summary(tweets$retweet_created_at)
+                 Min.               1st Qu.                Median                  Mean               3rd Qu.                  Max.                  NA's 
+"2020-01-28 14:14:35" "2020-05-01 23:08:12" "2020-05-04 15:11:05" "2020-05-05 17:35:12" "2020-05-09 20:42:05" "2020-05-15 18:24:04"                "1789" 
+> summary(tweets$quoted_created_at)
+                 Min.               1st Qu.                Median                  Mean               3rd Qu.                  Max.                  NA's 
+"2010-10-27 22:27:17" "2020-05-01 18:16:48" "2020-05-04 11:54:48" "2020-05-02 12:36:25" "2020-05-09 09:22:28" "2020-05-15 18:20:12"               "17870" 
+> 
+
+> summary(hoursUntilQuotedNotNA)
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+    0.01     2.31     8.53    96.63    19.63 83589.22 
+> 
+
+> summary(hoursUntilRetweetNotNA)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+   0.0011    0.7487    3.8299   19.7048   11.3419 2588.6311 
+> 
+
